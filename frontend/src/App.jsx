@@ -206,15 +206,24 @@ export default function App() {
 
   // Category distribution calculation
   const categoryStats = useMemo(() => {
-    if (!stats.categories || Object.keys(stats.categories).length === 0) return [];
-    const total = Object.values(stats.categories).reduce((acc, c) => acc + c.count, 0) || 1;
-    return Object.entries(stats.categories).map(([name, data]) => ({
-      name,
-      count: data.count,
-      valuation: data.valuation,
-      percentage: Math.round((data.count / total) * 100),
-      color: CATEGORY_COLORS[name] || '#94a3b8',
-    })).sort((a, b) => b.count - a.count);
+    if (!stats.categories || typeof stats.categories !== 'object') return [];
+    const entries = Object.entries(stats.categories);
+    if (entries.length === 0) return [];
+
+    const total = entries.reduce((acc, [, val]) => {
+      const count = typeof val === 'number' ? val : (val?.count || 0);
+      return acc + count;
+    }, 0) || 1;
+
+    return entries.map(([name, val]) => {
+      const count = typeof val === 'number' ? val : (val?.count || 0);
+      return {
+        name,
+        count,
+        percentage: Math.max(1, Math.round((count / total) * 100)),
+        color: CATEGORY_COLORS[name] || '#94a3b8',
+      };
+    }).sort((a, b) => b.count - a.count);
   }, [stats]);
 
   return (
@@ -454,7 +463,7 @@ export default function App() {
                 <div className="kpi-card-inner">
                   <div>
                     <div className="kpi-label">Total Units on Hand</div>
-                    <div className="kpi-value">{stats.total_units.toLocaleString()}</div>
+                    <div className="kpi-value">{(stats.total_units || 0).toLocaleString()}</div>
                     <div className="kpi-subtext">Aggregated across all warehouse bays</div>
                   </div>
                   <div className="kpi-icon-pill icon-cyan">📊</div>
@@ -466,7 +475,7 @@ export default function App() {
                   <div>
                     <div className="kpi-label">Inventory Valuation</div>
                     <div className="kpi-value">
-                      ${stats.total_valuation.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      ${Number(stats.total_valuation || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
                     <div className="kpi-subtext">Real-time asset value from DB</div>
                   </div>
@@ -506,7 +515,7 @@ export default function App() {
                         width: `${cat.percentage}%`,
                         backgroundColor: cat.color,
                       }}
-                      title={`${cat.name}: ${cat.count} SKUs (${cat.percentage}%) - $${cat.valuation.toFixed(2)}`}
+                      title={`${cat.name}: ${cat.count} SKUs (${cat.percentage}%)`}
                     />
                   ))}
                 </div>
@@ -658,11 +667,11 @@ export default function App() {
                               </div>
                             </td>
                             <td>
-                              <span className="unit-price">${item.unit_price.toFixed(2)}</span>
+                              <span className="unit-price">${Number(item.unit_price || 0).toFixed(2)}</span>
                             </td>
                             <td>
                               <span className="total-valuation">
-                                ${(item.quantity * item.unit_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                ${((item.quantity || 0) * (item.unit_price || 0)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                               </span>
                             </td>
                             <td>
