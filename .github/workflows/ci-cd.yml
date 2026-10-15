@@ -123,23 +123,17 @@ jobs:
           docker load -i /tmp/docker-images/backend.tar
           docker load -i /tmp/docker-images/frontend.tar
 
+      - name: Install Trivy Security Scanner
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+
       - name: Scan Backend Image for Vulnerabilities
-        uses: aquasecurity/trivy-action@0.30.0
-        with:
-          image-ref: ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
-          format: 'table'
-          severity: 'HIGH,CRITICAL'
-          ignore-unfixed: true
-          exit-code: '0'
+        run: |
+          trivy image --severity HIGH,CRITICAL --ignore-unfixed --format table ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
 
       - name: Scan Frontend Image for Vulnerabilities
-        uses: aquasecurity/trivy-action@0.30.0
-        with:
-          image-ref: ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
-          format: 'table'
-          severity: 'HIGH,CRITICAL'
-          ignore-unfixed: true
-          exit-code: '0'
+        run: |
+          trivy image --severity HIGH,CRITICAL --ignore-unfixed --format table ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
 
   # =========================================================================
   # STAGE 4: PUSH IMAGES TO REGISTRY
@@ -196,7 +190,6 @@ jobs:
       - name: Set Lowercase Repository Variables
         run: |
           OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          echo "OWNER_LC=${OWNER_LC}" >> $GITHUB_ENV
           echo "BACKEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-backend" >> $GITHUB_ENV
           echo "FRONTEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-frontend" >> $GITHUB_ENV
 
@@ -212,7 +205,7 @@ jobs:
           docker load -i /tmp/docker-images/frontend.tar
 
       - name: Set up Kind (Kubernetes in Docker) Cluster
-        uses: helm/kind-action@v1.12.0
+        uses: helm/kind-action@v1.9.0
         with:
           cluster_name: stockpulse-ci-cluster
 
@@ -221,10 +214,8 @@ jobs:
           kind load docker-image ${{ env.BACKEND_IMAGE }}:${{ github.sha }} --name stockpulse-ci-cluster
           kind load docker-image ${{ env.FRONTEND_IMAGE }}:${{ github.sha }} --name stockpulse-ci-cluster
 
-      - name: Install Helm
+      - name: Set up Helm
         uses: azure/setup-helm@v4
-        with:
-          version: 'latest'
 
       - name: Verify Cluster Health
         run: |
@@ -248,7 +239,7 @@ jobs:
             --set backend.replicaCount=2 \
             --set frontend.replicaCount=2
 
-      - name: Verify Deployment Rollout
+      - name: Verify Deployment Rollout & Cluster Resources
         run: |
           kubectl rollout status deployment/stockpulse-backend -n stockpulse --timeout=90s || true
           kubectl rollout status deployment/stockpulse-frontend -n stockpulse --timeout=90s || true
