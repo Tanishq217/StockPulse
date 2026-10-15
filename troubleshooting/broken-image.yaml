@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockpulse-broken-image
+  namespace: stockpulse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockpulse-broken-image
+  template:
+    metadata:
+      labels:
+        app: stockpulse-broken-image
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/tanishq217/stockpulse-backend:tag-that-does-not-exist
