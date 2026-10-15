@@ -88,8 +88,8 @@ jobs:
       - name: Save Docker Images for Scanning
         run: |
           mkdir -p /tmp/docker-images
-          docker save ${{ env.BACKEND_IMAGE }}:${{ github.sha }} -o /tmp/docker-images/backend.tar
-          docker save ${{ env.FRONTEND_IMAGE }}:${{ github.sha }} -o /tmp/docker-images/frontend.tar
+          docker save ${{ env.BACKEND_IMAGE }}:${{ github.sha }} ${{ env.BACKEND_IMAGE }}:latest -o /tmp/docker-images/backend.tar
+          docker save ${{ env.FRONTEND_IMAGE }}:${{ github.sha }} ${{ env.FRONTEND_IMAGE }}:latest -o /tmp/docker-images/frontend.tar
 
       - name: Upload Docker Image Artifacts
         uses: actions/upload-artifact@v4
@@ -160,6 +160,8 @@ jobs:
         run: |
           docker load -i /tmp/docker-images/backend.tar
           docker load -i /tmp/docker-images/frontend.tar
+          docker tag ${{ env.BACKEND_IMAGE }}:${{ github.sha }} ${{ env.BACKEND_IMAGE }}:latest
+          docker tag ${{ env.FRONTEND_IMAGE }}:${{ github.sha }} ${{ env.FRONTEND_IMAGE }}:latest
 
       - name: Log in to GitHub Container Registry (GHCR)
         uses: docker/login-action@v3
