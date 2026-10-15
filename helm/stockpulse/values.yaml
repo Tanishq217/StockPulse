@@ -3,7 +3,7 @@ namespace: stockpulse
 backend:
   replicaCount: 2
   image:
-    repository: ghcr.io/tanishqsingh/stockpulse-backend
+    repository: ghcr.io/tanishq217/stockpulse-backend
     tag: latest
     pullPolicy: IfNotPresent
   service:
@@ -23,7 +23,7 @@ backend:
 frontend:
   replicaCount: 2
   image:
-    repository: ghcr.io/tanishqsingh/stockpulse-frontend
+    repository: ghcr.io/tanishq217/stockpulse-frontend
     tag: latest
     pullPolicy: IfNotPresent
   service:

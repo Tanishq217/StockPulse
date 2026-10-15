@@ -1,6 +1,6 @@
 # StockPulse — Modern Warehouse & Product Inventory Platform
 
-[![CI/CD Pipeline](https://github.com/tanishqsingh/stockpulse/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/tanishqsingh/stockpulse/actions)
+[![CI/CD Pipeline](https://github.com/Tanishq217/StockPulse/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Tanishq217/StockPulse/actions)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-Kind%20%7C%20EKS-326CE5.svg)](https://kubernetes.io/)
 [![Terraform](https://img.shields.io/badge/Terraform-AWS%20IaC-844FBA.svg)](https://www.terraform.io/)
