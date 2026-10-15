@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "stockpulse.fullname" . }}-config
+  labels:
+    {{- include "stockpulse.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.backend.env.appName | quote }}
+  APP_ENV: {{ .Values.backend.env.appEnv | quote }}
+  PORT: "8000"
+  DB_HOST: {{ .Values.database.host | quote }}
+  DB_PORT: {{ .Values.database.port | quote }}
+  DB_NAME: {{ .Values.database.name | quote }}

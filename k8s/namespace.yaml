@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stockpulse
+  labels:
+    app.kubernetes.io/name: stockpulse
+    app.kubernetes.io/part-of: inventory-platform

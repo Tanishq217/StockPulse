@@ -1,0 +1,123 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockpulse-postgres
+  namespace: stockpulse
+  labels:
+    app: stockpulse-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockpulse-postgres
+  template:
+    metadata:
+      labels:
+        app: stockpulse-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: "stockpulse"
+            - name: POSTGRES_USER
+              value: "stockpulse"
+            - name: POSTGRES_PASSWORD
+              value: "stockpulse_password"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockpulse-backend
+  namespace: stockpulse
+  labels:
+    app: stockpulse-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stockpulse-backend
+  template:
+    metadata:
+      labels:
+        app: stockpulse-backend
+    spec:
+      containers:
+        - name: backend
+          image: stockpulse-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql+psycopg://stockpulse:stockpulse_password@stockpulse-postgres:5432/stockpulse"
+            - name: APP_NAME
+              value: "StockPulse API"
+            - name: APP_ENV
+              value: "kubernetes"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockpulse-frontend
+  namespace: stockpulse
+  labels:
+    app: stockpulse-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stockpulse-frontend
+  template:
+    metadata:
+      labels:
+        app: stockpulse-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: stockpulse-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 150m
+              memory: 128Mi

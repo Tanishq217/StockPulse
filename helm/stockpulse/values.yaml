@@ -1,0 +1,66 @@
+namespace: stockpulse
+
+backend:
+  replicaCount: 2
+  image:
+    repository: ghcr.io/tanishqsingh/stockpulse-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+  resources:
+    limits:
+      cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  env:
+    appName: "StockPulse API"
+    appEnv: "production"
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: ghcr.io/tanishqsingh/stockpulse-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+  resources:
+    limits:
+      cpu: 150m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+
+database:
+  host: stockpulse-postgres
+  port: 5432
+  name: stockpulse
+  user: stockpulse
+  password: stockpulse_password
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: stockpulse.local
+      paths:
+        - path: /
+          pathType: Prefix
+          service: frontend
+        - path: /api
+          pathType: Prefix
+          service: backend
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 75

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stockpulse-postgres
+  namespace: stockpulse
+  labels:
+    app: stockpulse-postgres
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+      name: postgres
+  selector:
+    app: stockpulse-postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stockpulse-backend
+  namespace: stockpulse
+  labels:
+    app: stockpulse-backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    app: stockpulse-backend
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stockpulse-frontend
+  namespace: stockpulse
+  labels:
+    app: stockpulse-frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+      protocol: TCP
+      name: http
+  selector:
+    app: stockpulse-frontend

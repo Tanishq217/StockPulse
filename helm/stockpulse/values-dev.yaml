@@ -1,0 +1,12 @@
+backend:
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+frontend:
+  replicaCount: 1
+
+autoscaling:
+  enabled: false
