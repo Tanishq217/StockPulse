@@ -251,3 +251,12 @@ The following technical proofs demonstrate the end-to-end functionality across a
 
 ### 9. GitHub Actions CI/CD Pipeline (5 Stages Succeeded)
 ![GitHub Actions CI/CD](docs/screenshots/github-actions-cicd.png)
+
+### 10. AWS Production Cloud Infrastructure (VPC & Networking)
+![AWS VPC Console](docs/screenshots/aws-vpc-console.png)
+
+### 11. AWS Elastic Kubernetes Service (EKS Cluster - Active)
+![AWS EKS Console](docs/screenshots/aws-eks-console.png)
+
+### 12. AWS EKS Cluster Details (Control Plane & API Endpoint)
+![AWS EKS Cluster Details](docs/screenshots/aws-eks-cluster-details.png)
