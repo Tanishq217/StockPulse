@@ -134,8 +134,8 @@ docker compose ps
 Expected output:
 ```text
 NAME                  IMAGE                    STATUS                    PORTS
-stockpulse-backend    devopsproject-backend    Up (healthy)              0.0.0.0:8000->8000/tcp
-stockpulse-frontend   devopsproject-frontend   Up                        0.0.0.0:3000->80/tcp
+stockpulse-backend    stockpulse-backend       Up (healthy)              0.0.0.0:8000->8000/tcp
+stockpulse-frontend   stockpulse-frontend      Up                        0.0.0.0:3000->80/tcp
 stockpulse-postgres   postgres:16-alpine       Up (healthy)              0.0.0.0:5432->5432/tcp
 ```
 
