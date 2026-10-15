@@ -221,40 +221,33 @@ terraform plan
 
 ---
 
-## 5. Required Screenshots Checklist for Submission
+## 5. Verification Proof & Screenshots
 
-Paste the following required screenshots directly into this section prior to final submission:
+The following technical proofs demonstrate the end-to-end functionality across all layers:
 
-### 1. Terminal output of `docker compose up --build`
-<!-- Screenshot Placeholder: docker compose up output showing build and startup -->
+### 1. Docker Compose Build & Startup
 ![Docker Compose Up](docs/screenshots/docker-compose-up.png)
 
-### 2. Output of `docker compose ps`
-<!-- Screenshot Placeholder: docker compose ps showing all 3 healthy containers -->
+### 2. Docker Compose Running Services (`docker compose ps`)
 ![Docker Compose PS](docs/screenshots/docker-compose-ps.png)
 
-### 3. Backend Swagger UI (`/docs`)
-<!-- Screenshot Placeholder: Swagger UI showing all endpoints and version -->
-![Swagger UI](docs/screenshots/swagger-docs.png)
+### 3. Backend Swagger API Documentation (`/docs`)
+![Swagger API Documentation](docs/screenshots/api-docs-swagger.png)
 
-### 4. Backend Health Endpoint (`/health`)
-<!-- Screenshot Placeholder: JSON output of /health showing status "up" -->
-![Health Endpoint](docs/screenshots/health-endpoint.png)
+### 4. Health Check Endpoint (`/health`)
+![Health Liveness Probe](docs/screenshots/api-health.png)
 
-### 5. Prometheus Metrics Endpoint (`/metrics`)
-<!-- Screenshot Placeholder: Raw output from /metrics -->
-![Metrics Endpoint](docs/screenshots/metrics-endpoint.png)
+### 5. Prometheus Telemetry Endpoint (`/metrics`)
+![Prometheus Metrics](docs/screenshots/api-metrics.png)
 
-### 6. Successful GitHub Actions CI/CD Pipeline Run
-<!-- Screenshot Placeholder: GitHub Actions showing all 5 stages green -->
-![GitHub Actions CI/CD](docs/screenshots/github-actions-run.png)
+### 6. Swagger API Test: `GET /api/inventory`
+![GET Inventory API](docs/screenshots/api-get-inventory.png)
 
----
+### 7. Swagger API Test: `POST /api/inventory`
+![POST Inventory API](docs/screenshots/api-post-inventory.png)
 
-## 6. Final Presentation (PPT) Guidelines
+### 8. Frontend Responsive Dashboard (`http://localhost:3000`)
+![Frontend UI Dashboard](docs/screenshots/frontend-dashboard.png)
 
-As specified by the instructor, the final presentation deck must be kept clean, understandable by a non-technical audience, and contain **only these 4 screenshots**:
-1. **GitHub Actions CI/CD Pipeline Run**: Showing automated test, build, scan, push, and deploy stages.
-2. **Main Repository Codebase**: Demonstrating clean file hierarchy, `.github`, `backend`, `frontend`, `helm`, `ktest`, and `terraform`.
-3. **Local Kubernetes Deployment**: Terminal output of `kubectl get pods -n stockpulse` showing running pods.
-4. **Docker Compose Output**: Manual run of `docker compose ps` with healthy services.
+### 9. GitHub Actions CI/CD Pipeline (5 Stages Succeeded)
+![GitHub Actions CI/CD](docs/screenshots/github-actions-cicd.png)
