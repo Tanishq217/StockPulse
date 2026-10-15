@@ -6,10 +6,9 @@ on:
   pull_request:
     branches: [main]
 
-env:
-  REGISTRY: ghcr.io
-  BACKEND_IMAGE: ghcr.io/${{ github.repository_owner }}/stockpulse-backend
-  FRONTEND_IMAGE: ghcr.io/${{ github.repository_owner }}/stockpulse-frontend
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   # =========================================================================
@@ -63,6 +62,12 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
+      - name: Set Lowercase Repository Variables
+        run: |
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "BACKEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-backend" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-frontend" >> $GITHUB_ENV
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -101,6 +106,12 @@ jobs:
     needs: build-images
     runs-on: ubuntu-latest
     steps:
+      - name: Set Lowercase Repository Variables
+        run: |
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "BACKEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-backend" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-frontend" >> $GITHUB_ENV
+
       - name: Download Built Images
         uses: actions/download-artifact@v4
         with:
@@ -138,10 +149,13 @@ jobs:
     needs: [build-images, security-scan]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
+      - name: Set Lowercase Repository Variables
+        run: |
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "BACKEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-backend" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-frontend" >> $GITHUB_ENV
+
       - name: Download Built Images
         uses: actions/download-artifact@v4
         with:
@@ -179,10 +193,33 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
+      - name: Set Lowercase Repository Variables
+        run: |
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "OWNER_LC=${OWNER_LC}" >> $GITHUB_ENV
+          echo "BACKEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-backend" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=ghcr.io/${OWNER_LC}/stockpulse-frontend" >> $GITHUB_ENV
+
+      - name: Download Built Images
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-images
+          path: /tmp/docker-images
+
+      - name: Load Images into Docker
+        run: |
+          docker load -i /tmp/docker-images/backend.tar
+          docker load -i /tmp/docker-images/frontend.tar
+
       - name: Set up Kind (Kubernetes in Docker) Cluster
         uses: helm/kind-action@v1.12.0
         with:
           cluster_name: stockpulse-ci-cluster
+
+      - name: Load Images into Kind Cluster
+        run: |
+          kind load docker-image ${{ env.BACKEND_IMAGE }}:${{ github.sha }} --name stockpulse-ci-cluster
+          kind load docker-image ${{ env.FRONTEND_IMAGE }}:${{ github.sha }} --name stockpulse-ci-cluster
 
       - name: Install Helm
         uses: azure/setup-helm@v4
@@ -204,14 +241,16 @@ jobs:
             --namespace stockpulse \
             --set backend.image.repository=${{ env.BACKEND_IMAGE }} \
             --set backend.image.tag=${{ github.sha }} \
+            --set backend.image.pullPolicy=Never \
             --set frontend.image.repository=${{ env.FRONTEND_IMAGE }} \
             --set frontend.image.tag=${{ github.sha }} \
+            --set frontend.image.pullPolicy=Never \
             --set backend.replicaCount=2 \
             --set frontend.replicaCount=2
 
       - name: Verify Deployment Rollout
         run: |
-          kubectl rollout status deployment/stockpulse-backend -n stockpulse --timeout=120s || true
-          kubectl rollout status deployment/stockpulse-frontend -n stockpulse --timeout=120s || true
+          kubectl rollout status deployment/stockpulse-backend -n stockpulse --timeout=90s || true
+          kubectl rollout status deployment/stockpulse-frontend -n stockpulse --timeout=90s || true
           kubectl get pods -n stockpulse
           kubectl get svc -n stockpulse
