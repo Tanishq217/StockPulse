@@ -4,6 +4,8 @@
 > **Student**: Tanishq Singh  
 > **Repository**: [https://github.com/Tanishq217/StockPulse](https://github.com/Tanishq217/StockPulse)  
 > **Live CI/CD**: [GitHub Actions Workflow](https://github.com/Tanishq217/StockPulse/actions)  
+> **Video Walkthrough (2-Min Demo)**: [Watch on Google Drive](https://drive.google.com/drive/u/0/folders/1T26bSPI4WeARpH5yKefgLMhzfZff7D9r)  
+> **Presentation Deck**: [View Browser PDF](../StockPulse_Presentation.pdf)  \|  [Download PowerPoint (.pptx)](./presentation/StockPulse_Presentation.pptx)  
 > **Target Grade**: 100 / 100 (Full Rubric Coverage)
 
 ---
