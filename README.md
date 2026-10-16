@@ -10,6 +10,13 @@ StockPulse is a production-grade 3-tier cloud-native warehouse and inventory man
 
 Built for the **DevOps Capstone Project (100 Points / 30% Weightage)**, this repository demonstrates the entire lifecycle of an enterprise microservice: from local Python development to multi-stage containerization, automated pytest quality gates, container security scanning (DevSecOps with Trivy), Kubernetes orchestration with Helm, AWS Infrastructure as Code with Terraform, and real-time observability via Prometheus & Grafana.
 
+> 🚀 **Quick Grading & Submission Links:**
+> - 📊 **Presentation Deck**: [`StockPulse_Presentation.pptx`](./StockPulse_Presentation.pptx) (also in [`docs/presentation/`](./docs/presentation/StockPulse_Presentation.pptx))
+> - 📋 **Submission & Rubric Guide**: [`docs/SUBMISSION.md`](./docs/SUBMISSION.md)
+> - 🏗️ **Detailed Architecture**: [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
+> - 📸 **All 14 Verification Screenshots**: [`docs/screenshots/`](./docs/screenshots/)
+
+
 ---
 
 ## 1. Architecture Overview
@@ -273,3 +280,10 @@ The following technical proofs demonstrate the end-to-end functionality across a
 
 ### 12. AWS EKS Cluster Details (Control Plane & API Endpoint)
 ![AWS EKS Cluster Details](docs/screenshots/aws-eks-cluster-details.png)
+
+### 13. Codebase & Repository Modular Architecture
+![Codebase Structure](docs/screenshots/codebase-structure.png)
+
+### 14. Kubernetes Local Deployment on Kind (`kubectl get pods,svc,deploy`)
+![Local Kubernetes Deployment](docs/screenshots/k8s-deployment-local.png)
+
