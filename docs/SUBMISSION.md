@@ -31,14 +31,25 @@ All high-resolution verification screenshots are stored in [`docs/screenshots/`]
 
 | Screenshot File | Description | Purpose / Rubric Proof |
 |---|---|---|
-| `github-actions-cicd.png` | GitHub Actions CI/CD Pipeline | **Mandatory**: 5 green jobs executing on push to `main` |
-| `docker-compose-up.png` | Docker Compose manual `up` run | **Mandatory**: Multi-container stack starting with dependencies |
-| `docker-compose-ps.png` | Docker Compose process health | Container status: `stockpulse-backend`, `frontend`, `db` all healthy |
-| `k8s-deployment-local.png` | Local Kubernetes deployment on Kind | **Mandatory**: Pods, services, and deployments in `stockpulse` namespace |
-| `codebase-structure.png` | Codebase & Repository Structure | **Mandatory**: Clean modular architecture and source tree |
+| `github-actions-cicd.png` | GitHub Actions CI/CD Pipeline | **Mandatory Proof**: 5 green jobs executing on push to `main` |
+| `docker-compose-ps.png` | Docker Compose process health | **Mandatory Proof**: `stockpulse-backend`, `frontend`, `postgres` all healthy |
+| `docker-compose-up.png` | Docker Compose manual `up` run | Multi-container stack starting with dependency ordering |
+| `k8s-deployment-local.png` | Local Kubernetes deployment on Kind | **Mandatory Proof**: Pods, services, and deployments in `stockpulse` |
+| `codebase-structure.png` | Codebase & Repository Structure | **Mandatory Proof**: Clean modular architecture and source tree |
 | `frontend-dashboard.png` | React 18 Web UI Dashboard | Live inventory tracking, low-stock alerts, restock actions |
+| `m1-mobile-view.png` | Mobile Responsive Dashboard (375px) | Handheld warehouse scanner & mobile viewport compatibility |
+| `m1-psql-tables.png` | PostgreSQL Relational Schema | `inventory_items` and `alembic_version` schema verified |
+| `m2-pytest.png` | Automated Unit & Integration Tests | 11 pytest test cases passing in 0.08s |
+| `m3-commits.png` | Conventional Git History | Clean commit log with semantic commit conventions |
+| `m4-nonroot.png` | Container Security / Non-Root UIDs | UIDs 10001 (backend) and 101 (frontend) verified |
+| `m5-ghcr-packages.png` | GitHub Container Registry (GHCR) | Published Docker container packages on GitHub |
+| `m6-trivy-scan.png` | DevSecOps Trivy Security Report | Container vulnerability scan report passing with zero blockers |
+| `m7-init.png` | Terraform IaC Initialization | Terraform successfully initialized with AWS provider |
+| `m8-helm-lint.png` | Helm Chart Linting & Validation | Helm chart lint passing with 0 errors |
+| `m9-metrics-curl.png` | Prometheus Metrics Terminal Output | Raw `/metrics` telemetry scraping showing HTTP RPS and latency |
+| `m9-troubleshooting.png` | Chaos Engineering Diagnostic Lab | Kubernetes `ImagePullBackOff` triage via `kubectl describe` |
 | `api-docs-swagger.png` | Interactive OpenAPI / Swagger UI | `/docs` showing all 7 endpoints with schemas |
-| `api-health.png` | Health & Liveness Probes | `GET /health` returning `{"status": "healthy", "database": "connected"}` |
+| `api-health.png` | Health & Liveness Probes | `GET /health` returning database and application status |
 | `api-metrics.png` | Prometheus Metrics Endpoint | `GET /metrics` exporting latency, request count, and status codes |
 | `api-get-inventory.png` | REST API Inventory Query | `GET /api/inventory` returning warehouse items JSON array |
 | `api-post-inventory.png` | REST API Restock Transaction | `POST /api/inventory` creating a new item with validation |
