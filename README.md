@@ -11,10 +11,10 @@ StockPulse is a production-grade 3-tier cloud-native warehouse and inventory man
 Built for the **DevOps Capstone Project (100 Points / 30% Weightage)**, this repository demonstrates the entire lifecycle of an enterprise microservice: from local Python development to multi-stage containerization, automated pytest quality gates, container security scanning (DevSecOps with Trivy), Kubernetes orchestration with Helm, AWS Infrastructure as Code with Terraform, and real-time observability via Prometheus & Grafana.
 
 > 🚀 **Quick Grading & Submission Links:**
-> - 🎥 **Video Walkthrough (2-Min Demo)**: [Watch on Google Drive](https://drive.google.com/drive/u/0/folders/1T26bSPI4WeARpH5yKefgLMhzfZff7D9r)
-> - 📊 **Presentation Deck**:
->   - 📄 [View in Browser (PDF)](./StockPulse_Presentation.pdf) *(Instant viewing directly on GitHub with 15 slides)*
->   - 📥 [Download PowerPoint (.pptx)](./docs/presentation/StockPulse_Presentation.pptx) *(Full editable PPT format)*
+> - 📁 **Mandatory Demo Folder**: [`demo/`](./demo/)
+>   - 🎥 **Presentation Video**: [Watch on Google Drive](https://drive.google.com/drive/u/0/folders/1T26bSPI4WeARpH5yKefgLMhzfZff7D9r) *(details in [`demo/VIDEO.md`](./demo/VIDEO.md))*
+>   - 📊 **Presentation Deck (PDF)**: [`demo/StockPulse_Presentation.pdf`](./demo/StockPulse_Presentation.pdf) *(Instant viewing directly on GitHub with 15 slides)*
+>   - 📥 **Presentation Deck (PPTX)**: [`demo/StockPulse_Presentation.pptx`](./demo/StockPulse_Presentation.pptx) *(Full editable PowerPoint)*
 > - 📋 **Submission & Rubric Guide**: [`docs/SUBMISSION.md`](./docs/SUBMISSION.md)
 > - 🏗️ **Detailed Architecture**: [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
 > - 📸 **All 26 Verification Screenshots**: [`docs/screenshots/`](./docs/screenshots/)
